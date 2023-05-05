@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#define SIGNAL_D( signal_f ) ( TYPE_SIGNAL ) ( & signal_f )
-#define HANDLER_D( hendler_f ) ( TYPE_HANDLER ) ( & handler_f )
+#define SIGNAL_D(signal_f) (TYPE_SIGNAL) (&signal_f)
+#define HANDLER_D(handler_f) (TYPE_HANDLER) (&handler_f)
 
 class Base;
 
@@ -21,6 +21,7 @@ struct Connection
 class Base 
 {
 protected:
+
 	Base* m_parent;
 	Base* m_current;
 
@@ -29,6 +30,8 @@ protected:
 	std::vector<Base*> m_childs;
 
 	std::vector<Connection*> connections;
+
+	int m_readiness;
 
 public:
 	
@@ -68,11 +71,19 @@ public:
 
 	void EmitSignal(TYPE_SIGNAL signal, std::string& message);
 
-	std::string getAbsolutePathOfCurrent();
+	std::string getAbsolutePath();
 
 	void Signal(std::string& message);
 
 	void Handle(std::string message);
+
+	void SetState(int state);
+
+	virtual int GetClassNumber();
+
+	virtual TYPE_SIGNAL GetSignalPointer();
+
+	virtual TYPE_HANDLER GetHandlerPointer();
 
 	~Base();
 

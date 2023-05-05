@@ -1,9 +1,9 @@
-#include <iostream>
+	#include <iostream>
 #include "Base.h"
 
 #define IDENTS_COUNT 4
 
-Base::Base(Base* parent, const std::string& name) : m_parent{ parent }, m_name{ name }, m_current { this }
+Base::Base(Base* parent, const std::string& name) : m_parent{ parent }, m_name{ name }, m_current{ this }, m_readiness{ 1 }
 {
 	if (parent != nullptr)
 		m_parent->AddChild(this);
@@ -17,7 +17,6 @@ void Base::AddChild(Base* child)
 std::string Base::GetName() 
 { 
 	return m_name; 
-
 }
 
 bool Base::SetName(const std::string& name) 
@@ -268,13 +267,25 @@ void Base::CreateConnection(TYPE_SIGNAL signal, Base* target, TYPE_HANDLER handl
 	connections.push_back(connection);
 }
 
-void Base::BreakConnection(TYPE_SIGNAL singnal, Base* target, TYPE_HANDLER handler)
+void Base::BreakConnection(TYPE_SIGNAL signal, Base* target, TYPE_HANDLER handler)
 {
-
+	for (size_t i = 0; i < connections.size(); ++i)
+	{
+		if (connections[i]->m_signal == signal)
+		{
+			delete connections[i];
+			this->connections.erase(connections.begin() + i);
+			return;
+		}
+	}
 }
 
 void Base::EmitSignal(TYPE_SIGNAL signal, std::string& message)
 {
+
+	if (m_readiness == 0)
+		return;
+	
 	TYPE_HANDLER handler;
 	Base* object;
 
@@ -287,34 +298,77 @@ void Base::EmitSignal(TYPE_SIGNAL signal, std::string& message)
 			handler = connections[i]->m_handler;
 			object = connections[i]->m_target;
 
+			if (object->m_readiness == 0)
+				return;
+
 			(object->*handler) (message);
 		}
 	}
 }
 
-void Base::Signal(std::string& message)
-{
-	std::cout << "Signal from " << getAbsolutePathOfCurrent();
-}
-
 void Base::Handle(std::string message)
 {
-
+	std::cout << std::endl << "Signal to " << getAbsolutePath() << " Text: " << message;
 }
 
-std::string Base::getAbsolutePathOfCurrent()
+void Base::Signal(std::string& message)
 {
-	std::string path = m_current->GetName();
-	Base* target = m_current;
+	std::cout << std::endl << "Signal from " << getAbsolutePath();
+	message += " (class: 1)";
+}
+
+std::string Base::getAbsolutePath()
+{
+	std::string path = "";
+	Base* target = this;
+
+	if (target->m_parent == nullptr)
+		return "/";
+
 	while (target->m_parent != nullptr) {
+		path = "/" + target->GetName() + path;
 		target = target->m_parent;
-		path = target->GetName() + "/" + path;
 	}
-	return "/" + path;
+	return path;
+}
+
+void Base::SetState(int state)
+{
+	if (m_parent != nullptr && m_parent->m_readiness == 0)
+	{
+		m_readiness = 0;
+		for (auto child : m_childs)
+			child->SetState(0);
+
+		return;
+	}
+
+	if (state == 0)
+	{
+		for (auto child : m_childs)
+			child->SetState(0);
+	}
+
+	m_readiness = state;
+}
+
+int Base::GetClassNumber() 
+{
+	return 1;
 }
 
 Base::~Base() 
 {
 	for (auto element : m_childs)
 		delete element; 
+}
+
+TYPE_SIGNAL Base::GetSignalPointer()
+{
+	return &Base::Signal;
+}
+
+TYPE_HANDLER Base::GetHandlerPointer()
+{
+	return &Base::Handle;
 }

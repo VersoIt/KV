@@ -1,5 +1,6 @@
 #include "AppNode.h"
 #include <iostream>
+#include <string>
 
 #include "Second.h"
 #include "Third.h"
@@ -12,6 +13,8 @@
 #define DELETE_CONNECT "DELETE_CONNECT"
 #define SET_CONDITION "SET_CONDITION"
 #define END "END"
+#define END_OF_CONNECTIONS "end_of_connections"
+#define ENDTREE "endtree"
 
 AppNode::AppNode(Base* parent, const std::string& name) : Base(parent, name), m_isApplied{ true }
 {
@@ -30,7 +33,7 @@ void AppNode::Build() {
 	{
 		std::cin >> path;
 
-		if (path == "endtree")
+		if (path == ENDTREE)
 			break;
 
 		std::cin >> elementToCreateName;
@@ -66,7 +69,7 @@ void AppNode::Build() {
 		case 3:
 			elementToCreate = new Third(parent, elementToCreateName);
 			break;
-			case 4:
+		case 4:
 			elementToCreate = new Fourth(parent, elementToCreateName);
 			break;
 		case 5:
@@ -76,7 +79,6 @@ void AppNode::Build() {
 			elementToCreate = new Sixth(parent, elementToCreateName);
 			break;
 		}
-
 	}
 
 	std::cout << "Object tree" << std::endl;
@@ -84,22 +86,39 @@ void AppNode::Build() {
 
 	Print();
 
-	std::cout << std::endl;
-
 	if (!m_isApplied)
 	{
-		std::cout << "The head object " << path << " is not found" << std::endl;
+		std::cout << std::endl << "The head object " << path << " is not found" << std::endl;
 	}
 	else
 	{
 		while (true)
 		{
-			std::string command;
+			std::string currentObjectCoord;
+			std::string targetObjectCoord;
 
+			std::cin >> currentObjectCoord;
+
+			if (currentObjectCoord == END_OF_CONNECTIONS)
+				break;
+
+			std::cin >> targetObjectCoord;
+
+			Base* firstObject = FindByCoordinate(currentObjectCoord);
+			Base* secondObject = FindByCoordinate(targetObjectCoord);
+
+			firstObject->CreateConnection(firstObject->GetSignalPointer(), secondObject, secondObject->GetHandlerPointer());
+		}
+
+		while (true)
+		{
+			std::string command;
 			std::cin >> command;
 
 			if (command == END)
+			{
 				break;
+			}
 
 			if (command == EMIT)
 			{
@@ -107,10 +126,50 @@ void AppNode::Build() {
 				std::string message;
 
 				std::cin >> objectCoordinate;
-				std::cin >> message;
+				std::getline(std::cin, message);
 
 				Base* object = FindByCoordinate(objectCoordinate);
 
+				object->EmitSignal(object->GetSignalPointer(), message);
+			}
+
+			if (command == SET_CONNECT)
+			{
+				std::string objectCoordinate;
+				std::string targetCoordinate;
+
+				std::cin >> objectCoordinate;
+				std::cin >> targetCoordinate;
+
+				Base* object = FindByCoordinate(objectCoordinate);
+				Base* target = FindByCoordinate(targetCoordinate);
+
+				object->CreateConnection(object->GetSignalPointer(), target, target->GetHandlerPointer());
+			}
+
+			if (command == DELETE_CONNECT)
+			{
+				std::string objectCoordinate;
+				std::string targetCoordinate;
+
+				std::cin >> objectCoordinate;
+				std::cin >> targetCoordinate;
+
+				Base* object = FindByCoordinate(objectCoordinate);
+				Base* target = FindByCoordinate(targetCoordinate);
+				object->BreakConnection(object->GetSignalPointer(), target, target->GetHandlerPointer());
+			}
+
+			if (command == SET_CONDITION)
+			{
+				std::string objectCoordinate;
+				int state;
+
+				std::cin >> objectCoordinate;
+				std::cin >> state;
+
+				Base* object = FindByCoordinate(objectCoordinate);
+				object->SetState(state);
 			}
 		}
 	}
@@ -118,10 +177,5 @@ void AppNode::Build() {
 
 int AppNode::Execute() 
 {
-	if (m_isApplied)
-	{
-
-	}
-
 	return 0; 
 }
