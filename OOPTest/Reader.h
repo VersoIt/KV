@@ -22,6 +22,8 @@ public:
 	TYPE_SIGNAL GetSignalPointer() override;
 
 	TYPE_HANDLER GetHandlerPointer() override;
+
+	bool IsNumber(std::string str);
 };
 
 #endif // READER_H

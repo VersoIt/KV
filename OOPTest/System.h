@@ -13,11 +13,11 @@ class System : public Base
 {
 private:
 
-	Reader* reader;
-	Arithmetic* arithmetic;
-	Shift* shift;
-	Clear* clear;
-	Output* output;
+	Reader* reader = nullptr;
+	Arithmetic* arithmetic = nullptr;
+	Shift* shift = nullptr;
+	Clear* clear = nullptr;
+	Output* output = nullptr;
 
 public:
 

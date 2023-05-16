@@ -2,6 +2,9 @@
 #ifndef SHIFT_H
 #define SHIFT_H
 
+#define SHIFT_LEFT "<<"
+#define SHIFT_RIGHT ">>"
+
 #include "Base.h"
 
 class Shift : public Base

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Base.h"
 
+#include <sstream>
+
 #define IDENTS_COUNT 4
 
 Base::Base(Base* parent, const std::string& name) : m_parent{ parent }, m_name{ name }, m_current{ this }, m_readiness{ 1 }

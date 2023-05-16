@@ -2,18 +2,10 @@
 
 #define OFF "Off"
 #define SHOW_TREE "SHOWTREE"
+#define CLEAR "C"
 
 #include <sstream>
 #include <iostream>
-
-bool IsNumber(std::string str)
-{
-	std::istringstream is(str);
-	int number;
-
-	is >> number;
-	return is.eof() && !is.fail();
-}
 
 Reader::Reader() : Base(nullptr, "")
 {
@@ -35,10 +27,14 @@ void Reader::Signal(std::string& message)
 
 	std::cin >> firstOperand;
 
-	if (firstOperand == "+" || firstOperand == "-" || firstOperand == "*" || firstOperand == "/")
+	if (firstOperand == "+" || firstOperand == "-" || firstOperand == "*" || firstOperand == "/" || firstOperand == ">>" || firstOperand == "<<")
 	{
 		std::cin >> secondOperand;
-		message += " " + firstOperand + " " + secondOperand;
+		if (message.empty())
+			message = "0 " + firstOperand + " " + secondOperand;
+		else
+			message += " " + firstOperand + " " + secondOperand;
+
 		std::cout << message;
 		return;
 	}
@@ -46,6 +42,12 @@ void Reader::Signal(std::string& message)
 	if (firstOperand == OFF)
 	{
 		message = OFF;
+		return;
+	}
+
+	if (firstOperand == CLEAR)
+	{
+		message = CLEAR;
 		return;
 	}
 
@@ -78,7 +80,6 @@ void Reader::Signal(std::string& message)
 	std::cin >> secondOperand;
 
 	message = firstOperand + " " + command + " " + secondOperand;
-
 	std::cout << message;
 }
 
@@ -95,4 +96,13 @@ TYPE_SIGNAL Reader::GetSignalPointer()
 TYPE_HANDLER Reader::GetHandlerPointer()
 {
 	return HANDLER_D(Reader::Handle);
+}
+
+bool Reader::IsNumber(std::string str)
+{
+	std::istringstream is(str);
+	int number;
+
+	is >> number;
+	return is.eof() && !is.fail();
 }

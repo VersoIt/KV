@@ -6,46 +6,21 @@
 #include <bitset>
 #include <algorithm>
 
+#define PLUS "+"
+#define MINUS "-"
+#define DIVIDE "/"
+#define PRODUCT "*"
+
+#define DIVISION_STAT "%"
+
 Arithmetic::Arithmetic() : Base(nullptr, "")
 {
 }
 
 Arithmetic::Arithmetic(Base* parent, const std::string& name) : Base(parent, name) {}
 
-std::string ToHex(int number)
-{
-	std::stringstream ss;
-	ss << std::setfill('0') << std::setw(4) << std::hex << number;
-
-	std::string result = ss.str();
-	std::for_each(result.begin(), result.end(), [](char& e) {
-		e = std::toupper(e);
-	});
-
-	return result;
-}
-
-std::string ToBin(int number)
-{
-	std::bitset<16> binary(number);
-	std::string binaryStr = "";
-
-	for (int i = 0; i < binary.size(); ++i)
-	{
-		binaryStr += std::to_string(binary[i]);
-		if ((i + 1) % 4 == 0 && i != binary.size() - 1)
-		{
-			binaryStr += " ";
-		}
-	}
-
-	std::reverse(binaryStr.begin(), binaryStr.end());
-	return binaryStr;
-}
-
 void Arithmetic::Handle(std::string message)
 {
-	std::cout << std::endl << "Signal to " << getAbsolutePath() << " Text: " << message;
 }
 
 void Arithmetic::Signal(std::string& message)
@@ -56,27 +31,42 @@ void Arithmetic::Signal(std::string& message)
 
 	std::stringstream ss(message);
 	ss >> firstOperand;
-	while (ss >> command >> secondOperand)
+	ss >> command >> secondOperand;
+
+	if (command == PLUS)
 	{
-		if (command == "+")
+		firstOperand += secondOperand;
+	}
+	else if (command == DIVIDE)
+	{
+		if (secondOperand == 0)
 		{
-			firstOperand += secondOperand;
+			std::cout << "     " << DIVISION_BY_ZERO;
+			message = DIVISION_BY_ZERO;
+			return;
 		}
-		else if (command == "/")
-		{
-			firstOperand /= secondOperand;
-		}
-		else if (command == "*")
-		{
-			firstOperand *= secondOperand;
-		}
-		else if (command == "-")
-		{
-			firstOperand -= secondOperand;
-		}
+		firstOperand /= secondOperand;
+	}
+	else if (command == PRODUCT)
+	{
+		firstOperand *= secondOperand;
+	}
+	else if (command == MINUS)
+	{
+		firstOperand -= secondOperand;
+	}
+	else if (command == DIVISION_STAT)
+	{
+		firstOperand %= secondOperand;
 	}
 
-	std::cout << "     " << "HEX" << " " << ToHex(firstOperand) << "  " << "DEC " << firstOperand << "  " << "BIN" << " " << ToBin(firstOperand);
+	if (firstOperand != static_cast<short>(firstOperand))
+	{
+		std::cout << "     " << ARITHMETIC_OVERFLOW;
+		message = ARITHMETIC_OVERFLOW;
+	}
+	else
+		message = std::to_string(firstOperand);
 }
 
 int Arithmetic::GetClassNumber()

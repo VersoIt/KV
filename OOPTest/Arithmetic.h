@@ -2,6 +2,9 @@
 #ifndef ARITHMETIC_H
 #define ARITHMETIC_H
 
+#define DIVISION_BY_ZERO "Division by zero"
+#define ARITHMETIC_OVERFLOW "Overflow"
+
 #include "Base.h"
 
 class Arithmetic : public Base
