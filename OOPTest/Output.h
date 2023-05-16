@@ -1,16 +1,15 @@
 #pragma once
-#ifndef THIRD_H
-#define THIRD_H
+#ifndef OUTPUT_H
+#define OUTPUT_H
 
 #include "Base.h"
 
-class Third : public Base
+class Output : public Base
 {
 public:
+	Output();
 
-	Third();
-
-	Third(Base* parent, const std::string& name);
+	Output(Base* parent, const std::string& name);
 
 	void Handle(std::string message);
 
@@ -23,4 +22,4 @@ public:
 	TYPE_HANDLER GetHandlerPointer() override;
 };
 
-#endif // THIRD_H
+#endif // OUTPUT_H

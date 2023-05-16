@@ -1,9 +1,10 @@
-#include "AppNode.h"
+#include "System.h"
 
 int main()
 {
-	AppNode appNode(nullptr);
-	appNode.Build();
-	int code = appNode.Execute();
+	System system(nullptr, "");
+	system.build_tree_objects();
+	system.exec_app();
+	int code = system.Execute();
 	return code;
 }

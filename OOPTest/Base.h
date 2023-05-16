@@ -63,8 +63,6 @@ public:
 
 	Base* FindByCoordinate(const std::string& coordinate);
 
-	// new methods
-
 	void CreateConnection(TYPE_SIGNAL signal, Base* target, TYPE_HANDLER handler);
 
 	void BreakConnection(TYPE_SIGNAL singnal, Base* target, TYPE_HANDLER handler);
@@ -73,13 +71,13 @@ public:
 
 	std::string getAbsolutePath();
 
-	void Signal(std::string& message);
-
 	void Handle(std::string message);
 
 	void SetState(int state);
 
 	virtual int GetClassNumber();
+
+	virtual void Signal(std::string& message);
 
 	virtual TYPE_SIGNAL GetSignalPointer();
 

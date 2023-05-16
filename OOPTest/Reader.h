@@ -1,17 +1,17 @@
 #pragma once
-#ifndef SECOND_H
-#define SECOND_H
+#ifndef READER_H
+#define READER_H
 
 #include "Base.h"
 
-class Second : public Base
+class Reader : public Base
 {
 
 public:
 
-	Second();
+	Reader();
 
-	Second(Base* parent, const std::string& name);
+	Reader(Base* parent, const std::string& name);
 
 	void Handle(std::string message);
 
@@ -24,4 +24,4 @@ public:
 	TYPE_HANDLER GetHandlerPointer() override;
 };
 
-#endif // SECOND_H
+#endif // READER_H

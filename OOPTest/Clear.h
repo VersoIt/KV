@@ -1,17 +1,17 @@
 #pragma once
 #pragma once
-#ifndef FIFTH_H
-#define FIFTH_H
+#ifndef CLEAR_H
+#define CLEAR_H
 
 #include "Base.h"
 
-class Fifth : public Base
+class Clear : public Base
 {
 public:
 
-	Fifth();
+	Clear();
 
-	Fifth(Base* parent, const std::string& name);
+	Clear(Base* parent, const std::string& name);
 
 	void Handle(std::string message);
 

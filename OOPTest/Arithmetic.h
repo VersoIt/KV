@@ -1,17 +1,16 @@
 #pragma once
-#pragma once
-#ifndef FOURTH_H
-#define FOURTH_H
+#ifndef ARITHMETIC_H
+#define ARITHMETIC_H
 
 #include "Base.h"
 
-class Fourth : public Base
+class Arithmetic : public Base
 {
 public:
 
-	Fourth();
+	Arithmetic();
 
-	Fourth(Base* parent, const std::string& name);
+	Arithmetic(Base* parent, const std::string& name);
 
 	void Handle(std::string message);
 
@@ -24,4 +23,4 @@ public:
 	TYPE_HANDLER GetHandlerPointer() override;
 };
 
-#endif // FOURTH_H
+#endif // ARITHMETIC_H

@@ -1,15 +1,16 @@
 #pragma once
-#ifndef SIXTH_H
-#define SIXTH_H
+#ifndef SHIFT_H
+#define SHIFT_H
 
 #include "Base.h"
 
-class Sixth : public Base
+class Shift : public Base
 {
 public:
-	Sixth();
 
-	Sixth(Base* parent, const std::string& name);
+	Shift();
+
+	Shift(Base* parent, const std::string& name);
 
 	void Handle(std::string message);
 
@@ -22,4 +23,4 @@ public:
 	TYPE_HANDLER GetHandlerPointer() override;
 };
 
-#endif // SIXTH_H
+#endif // SHIFT_H

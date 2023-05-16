@@ -1,4 +1,4 @@
-	#include <iostream>
+#include <iostream>
 #include "Base.h"
 
 #define IDENTS_COUNT 4
@@ -286,35 +286,26 @@ void Base::EmitSignal(TYPE_SIGNAL signal, std::string& message)
 	if (m_readiness == 0)
 		return;
 	
-	TYPE_HANDLER handler;
+	TYPE_SIGNAL sign;
 	Base* object;
-
-	(this->*signal) (message);
 
 	for (size_t i = 0; i < connections.size(); ++i)
 	{
 		if (connections[i]->m_signal == signal)
 		{
-			handler = connections[i]->m_handler;
+			sign = connections[i]->m_signal;
 			object = connections[i]->m_target;
 
 			if (object->m_readiness == 0)
 				return;
 
-			(object->*handler) (message);
+			(object->*sign) (message);
 		}
 	}
 }
 
 void Base::Handle(std::string message)
 {
-	std::cout << std::endl << "Signal to " << getAbsolutePath() << " Text: " << message;
-}
-
-void Base::Signal(std::string& message)
-{
-	std::cout << std::endl << "Signal from " << getAbsolutePath();
-	message += " (class: 1)";
 }
 
 std::string Base::getAbsolutePath()
@@ -330,6 +321,10 @@ std::string Base::getAbsolutePath()
 		target = target->m_parent;
 	}
 	return path;
+}
+
+void Base::Signal(std::string& message)
+{
 }
 
 void Base::SetState(int state)
@@ -365,10 +360,10 @@ Base::~Base()
 
 TYPE_SIGNAL Base::GetSignalPointer()
 {
-	return &Base::Signal;
+	return nullptr;
 }
 
 TYPE_HANDLER Base::GetHandlerPointer()
 {
-	return &Base::Handle;
+	return nullptr;
 }

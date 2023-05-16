@@ -129,23 +129,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AppNode.cpp" />
+    <ClCompile Include="System.cpp" />
     <ClCompile Include="Base.cpp" />
-    <ClCompile Include="Fifth.cpp" />
-    <ClCompile Include="Fourth.cpp" />
-    <ClCompile Include="Second.cpp" />
-    <ClCompile Include="Sixth.cpp" />
+    <ClCompile Include="Clear.cpp" />
+    <ClCompile Include="Shift.cpp" />
+    <ClCompile Include="Reader.cpp" />
+    <ClCompile Include="Output.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Third.cpp" />
+    <ClCompile Include="Arithmetic.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AppNode.h" />
+    <ClInclude Include="System.h" />
     <ClInclude Include="Base.h" />
-    <ClInclude Include="Fifth.h" />
-    <ClInclude Include="Fourth.h" />
-    <ClInclude Include="Second.h" />
-    <ClInclude Include="Sixth.h" />
-    <ClInclude Include="Third.h" />
+    <ClInclude Include="Clear.h" />
+    <ClInclude Include="Shift.h" />
+    <ClInclude Include="Reader.h" />
+    <ClInclude Include="Output.h" />
+    <ClInclude Include="Arithmetic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
